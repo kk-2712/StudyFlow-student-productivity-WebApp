@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Flow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Geist+Mono:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app-shell">
+
+    <!-- ═══════════════════════════════════════
+         SIDEBAR
+    ═══════════════════════════════════════ -->
+    <aside class="sidebar" id="sidebar">
+
+      <div class="sidebar-brand">
+        <div class="brand-mark"></div>
+        <span class="brand-name">Study<em>Flow</em></span>
+      </div>
+
+      <nav class="sidebar-nav" role="navigation" aria-label="Main navigation">
+        <button class="nav-item active" data-tab="dashboard" aria-current="page">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <rect x="2" y="2" width="7" height="7" rx="1.5"/>
+            <rect x="11" y="2" width="7" height="7" rx="1.5"/>
+            <rect x="2" y="11" width="7" height="7" rx="1.5"/>
+            <rect x="11" y="11" width="7" height="7" rx="1.5"/>
+          </svg>
+          <span>Dashboard</span>
+        </button>
+
+        <button class="nav-item" data-tab="tasks">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M4 5h12M4 10h8M4 15h5"/>
+            <path d="M15 12l-2.5 2.5L11 13"/>
+          </svg>
+          <span>Tasks</span>
+          <span class="nav-badge" id="nav-tasks-badge"></span>
+        </button>
+
+        <button class="nav-item" data-tab="timer">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <circle cx="10" cy="11" r="7"/>
+            <path d="M10 7v4l2.5 2.5"/>
+            <path d="M7.5 2h5"/>
+          </svg>
+          <span>Focus Timer</span>
+        </button>
+
+        <button class="nav-item" data-tab="analytics">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M2 15l4-5 4 3 4-6 4 2"/>
+            <path d="M2 17h16"/>
+          </svg>
+          <span>Analytics</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+          <svg class="theme-icon" id="themeIcon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M17.3 13.4A7 7 0 0 1 6.6 2.7 7.5 7.5 0 1 0 17.3 13.4z"/>
+          </svg>
+          <span>Dark mode</span>
+        </button>
+      </div>
+
+      <!-- Mobile hamburger toggle -->
+      <button class="mobile-close" id="mobileClose" aria-label="Close menu">✕</button>
+    </aside>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ═══════════════════════════════════════
+         MOBILE TOP BAR
+    ═══════════════════════════════════════ -->
+    <div class="mobile-topbar">
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="mobile-brand">Study<em>Flow</em></span>
+      <button class="theme-toggle-mobile" id="themeToggleMobile" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17.3 13.4A7 7 0 0 1 6.6 2.7 7.5 7.5 0 1 0 17.3 13.4z"/></svg>
+      </button>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         MAIN CONTENT
+    ═══════════════════════════════════════ -->
+    <main class="main-content" id="mainContent">
+
+      <!-- ─── DASHBOARD ─────────────────────── -->
+      <section class="tab-panel active" id="tab-dashboard" role="tabpanel">
+
+        <header class="panel-header">
+          <p class="panel-eyebrow" id="dashDate"></p>
+          <h1 class="panel-title">Good <span id="timeOfDay"></span>.</h1>
+        </header>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <span class="kpi-label">Study time today</span>
+            <span class="kpi-value" id="kpi-study-time">0h 0m</span>
+            <div class="kpi-track"><div class="kpi-fill" id="kpi-time-bar"></div></div>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-label">Completed</span>
+            <span class="kpi-value" id="kpi-completed">0</span>
+            <div class="kpi-track"><div class="kpi-fill accent" id="kpi-completed-bar"></div></div>
+          </div>
+          <div class="kpi-card kpi-danger">
+            <span class="kpi-label">Overdue</span>
+            <span class="kpi-value danger" id="kpi-overdue">0</span>
+            <div class="kpi-track"><div class="kpi-fill danger" id="kpi-overdue-bar"></div></div>
+          </div>
+        </div>
+
+        <div class="panel-block">
+          <div class="block-header">
+            <h2 class="block-title">Due Today</h2>
+            <button class="text-link" data-tab="tasks">See all</button>
+          </div>
+          <div class="task-list" id="dash-today-list"></div>
+          <p class="empty-state" id="dash-today-empty">Nothing due today — you're clear!</p>
+        </div>
+
+        <div class="panel-block">
+          <div class="block-header">
+            <h2 class="block-title">Overdue <span class="title-urgent" id="dash-overdue-count-label"></span></h2>
+            <button class="text-link" data-tab="tasks">See all</button>
+          </div>
+          <div class="task-list" id="dash-overdue-list"></div>
+          <p class="empty-state" id="dash-overdue-empty">No overdue tasks. You're on top of it! 🎉</p>
+        </div>
+
+      </section>
+
+      <!-- ─── TASKS ──────────────────────────── -->
+      <section class="tab-panel" id="tab-tasks" role="tabpanel" hidden>
+
+        <header class="panel-header">
+          <p class="panel-eyebrow">Manage</p>
+          <h1 class="panel-title">Your Tasks</h1>
+        </header>
+
+        <!-- Add Task Form -->
+        <div class="form-card">
+          <h2 class="form-heading">New Task</h2>
+          <div class="task-form-grid">
+            <div class="form-field span-full">
+              <label class="form-label" for="taskTitle">Title</label>
+              <input
+                class="form-input"
+                type="text"
+                id="taskTitle"
+                placeholder="e.g. Chapter 5 — Organic Chemistry"
+                autocomplete="off"
+                maxlength="120"
+              />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="taskDeadline">Deadline</label>
+              <input class="form-input" type="date" id="taskDeadline" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="taskPriority">Priority</label>
+              <select class="form-input form-select" id="taskPriority">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+            <div class="form-field form-action">
+              <button class="btn btn-primary" id="addTaskBtn">Add Task</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Groups -->
+        <div class="task-groups">
+
+          <div class="task-group" id="group-overdue">
+            <div class="group-header">
+              <div class="group-label-row">
+                <span class="group-pip pip-danger"></span>
+                <h2 class="group-title">Overdue</h2>
+                <span class="group-count" id="count-overdue">0</span>
+              </div>
+            </div>
+            <div class="task-list" id="list-overdue"></div>
+            <p class="empty-state" id="empty-overdue">No overdue tasks.</p>
+          </div>
+
+          <div class="task-group" id="group-today">
+            <div class="group-header">
+              <div class="group-label-row">
+                <span class="group-pip pip-accent"></span>
+                <h2 class="group-title">Today</h2>
+                <span class="group-count" id="count-today">0</span>
+              </div>
+            </div>
+            <div class="task-list" id="list-today"></div>
+            <p class="empty-state" id="empty-today">Nothing due today.</p>
+          </div>
+
+          <div class="task-group" id="group-tomorrow">
+            <div class="group-header">
+              <div class="group-label-row">
+                <span class="group-pip pip-muted"></span>
+                <h2 class="group-title">Tomorrow</h2>
+                <span class="group-count" id="count-tomorrow">0</span>
+              </div>
+            </div>
+            <div class="task-list" id="list-tomorrow"></div>
+            <p class="empty-state" id="empty-tomorrow">Nothing due tomorrow.</p>
+          </div>
+
+          <div class="task-group" id="group-upcoming">
+            <div class="group-header">
+              <div class="group-label-row">
+                <span class="group-pip pip-muted"></span>
+                <h2 class="group-title">Upcoming</h2>
+                <span class="group-count" id="count-upcoming">0</span>
+              </div>
+            </div>
+            <div class="task-list" id="list-upcoming"></div>
+            <p class="empty-state" id="empty-upcoming">Nothing further ahead.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ─── FOCUS TIMER ─────────────────────── -->
+      <section class="tab-panel" id="tab-timer" role="tabpanel" hidden>
+
+        <header class="panel-header">
+          <p class="panel-eyebrow">Pomodoro</p>
+          <h1 class="panel-title">Focus Timer</h1>
+        </header>
+
+        <div class="timer-layout">
+
+          <!-- Mode indicator bar -->
+          <div class="timer-mode-bar">
+            <span class="mode-badge" id="timerModeBadge">Focus</span>
+            <div class="cycle-dots" id="cycleDots" aria-label="Sessions in current cycle">
+              <span class="cycle-dot"></span>
+              <span class="cycle-dot"></span>
+              <span class="cycle-dot"></span>
+              <span class="cycle-dot"></span>
+            </div>
+            <span class="sessions-counter" id="timerSessionsCount">0 / 4 to long break</span>
+          </div>
+
+          <div class="timer-face-wrap" id="timerFaceWrap" data-mode="focus">
+            <svg class="ring-svg" viewBox="0 0 220 220" aria-hidden="true">
+              <circle class="ring-track" cx="110" cy="110" r="96"/>
+              <circle class="ring-progress" id="ringProgress" cx="110" cy="110" r="96"/>
+            </svg>
+            <div class="timer-center">
+              <div class="timer-clock" id="timerDisplay" aria-live="polite">25:00</div>
+              <div class="timer-status-text" id="timerStatus">Ready</div>
+            </div>
+          </div>
+
+          <div class="timer-controls">
+            <button class="btn btn-primary" id="startBtn">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4l12 6-12 6V4z"/></svg>
+              Start
+            </button>
+            <button class="btn btn-secondary" id="pauseBtn" disabled>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3.5" height="12" rx="1"/><rect x="11.5" y="4" width="3.5" height="12" rx="1"/></svg>
+              Pause
+            </button>
+            <button class="btn btn-ghost" id="resetBtn">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 10a6 6 0 1 1 1.8 4.3"/><path d="M4 14.5V10h4.5"/></svg>
+              Reset
+            </button>
+          </div>
+
+          <div class="session-card">
+            <div class="block-header">
+              <h2 class="block-title">Today's Sessions</h2>
+              <span class="session-total" id="sessionTotalDisplay">0h 0m</span>
+            </div>
+            <p class="session-total-label" id="timerTotalSessions">0 focus sessions today</p>
+            <ul class="session-list" id="sessionList">
+              <li class="session-empty-msg" id="sessionEmpty">No sessions yet. Press Start to begin.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ─── ANALYTICS ───────────────────────── -->
+      <section class="tab-panel" id="tab-analytics" role="tabpanel" hidden>
+
+        <header class="panel-header">
+          <p class="panel-eyebrow">Insights</p>
+          <h1 class="panel-title">Analytics</h1>
+        </header>
+
+        <div class="analytics-grid">
+
+          <div class="an-card wide">
+            <p class="an-label">Total Study Time Today</p>
+            <p class="an-big" id="an-study-time">0h 0m</p>
+            <p class="an-sub" id="an-sessions-txt">0 sessions completed</p>
+          </div>
+
+          <div class="an-card">
+            <p class="an-label">Tasks Completed</p>
+            <p class="an-big" id="an-completed">0</p>
+            <p class="an-sub" id="an-of-total">of 0 total</p>
+          </div>
+
+          <div class="an-card danger">
+            <p class="an-label">Overdue Tasks</p>
+            <p class="an-big danger" id="an-overdue">0</p>
+            <p class="an-sub">tasks past deadline</p>
+          </div>
+
+          <div class="an-card wide">
+            <p class="an-label">Completion Rate</p>
+            <div class="rate-row">
+              <div class="rate-track"><div class="rate-fill" id="an-rate-fill"></div></div>
+              <span class="rate-pct" id="an-rate-pct">0%</span>
+            </div>
+            <p class="an-sub" id="an-rate-msg">Complete tasks to track your progress.</p>
+          </div>
+
+          <div class="an-card wide">
+            <p class="an-label">Priority Breakdown</p>
+            <div class="priority-list">
+              <div class="priority-row">
+                <span class="p-dot p-high"></span>
+                <span class="p-name">High</span>
+                <div class="p-bar-track"><div class="p-bar-fill p-high-fill" id="an-bar-high"></div></div>
+                <span class="p-count" id="an-p-high">0</span>
+              </div>
+              <div class="priority-row">
+                <span class="p-dot p-medium"></span>
+                <span class="p-name">Medium</span>
+                <div class="p-bar-track"><div class="p-bar-fill p-medium-fill" id="an-bar-medium"></div></div>
+                <span class="p-count" id="an-p-medium">0</span>
+              </div>
+              <div class="priority-row">
+                <span class="p-dot p-low"></span>
+                <span class="p-name">Low</span>
+                <div class="p-bar-track"><div class="p-bar-fill p-low-fill" id="an-bar-low"></div></div>
+                <span class="p-count" id="an-p-low">0</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
